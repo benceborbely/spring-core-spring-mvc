@@ -4,10 +4,7 @@ import guru.springframework.domain.Product;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -26,6 +23,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Integer id) {
         return products.get(id);
+    }
+
+    @Override
+    public Product saveOrUpdate(Product product) {
+        if (product == null) {
+            throw new RuntimeException("Product cannot be null.");
+        }
+
+        if (product.getId() == null) {
+            product.setId(getNextKey());
+        }
+
+        products.put(product.getId(), product);
+
+        return product;
+    }
+
+    private Integer getNextKey() {
+        return Collections.max(products.keySet()) + 1;
     }
 
     private void loadProducts() {
