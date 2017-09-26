@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.domain.DomainObject;
 import guru.springframework.domain.Product;
 import org.springframework.stereotype.Service;
 
@@ -7,71 +8,55 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-public class ProductServiceImpl implements ProductService {
-
-    private Map<Integer, Product> products;
+public class ProductServiceImpl extends AbstractMapService implements ProductService {
 
     public ProductServiceImpl() {
-        loadProducts();
+        super();
     }
 
     @Override
-    public List<Product> listAllProducts() {
-        return new ArrayList<>(products.values());
+    public List<DomainObject> getAll() {
+        return super.getAll();
     }
 
     @Override
-    public Product getProductById(Integer id) {
-        return products.get(id);
+    public Product getById(Integer id) {
+        return (Product) super.getById(id);
     }
 
     @Override
-    public Product saveOrUpdate(Product product) {
-        if (product == null) {
-            throw new RuntimeException("Product cannot be null.");
-        }
-
-        if (product.getId() == null) {
-            product.setId(getNextKey());
-        }
-
-        products.put(product.getId(), product);
-
-        return product;
+    public Product saveOrUpdate(Product domainObject) {
+        return (Product) super.saveOrUpdate(domainObject);
     }
 
     @Override
-    public void deleteProduct(Integer id) {
-        this.products.remove(id);
+    public void delete(Integer id) {
+        super.delete(id);
     }
 
-    private Integer getNextKey() {
-        return Collections.max(products.keySet()) + 1;
-    }
-
-    private void loadProducts() {
-        products = new HashMap<>();
+    protected void loadDomainObjects() {
+        domainObjects = new HashMap<>();
 
         Product product1 = new Product();
         product1.setId(1);
         product1.setDescription("Product 1");
         product1.setImageUrl("product1.jpg");
         product1.setPrice(new BigDecimal(50));
-        products.put(1, product1);
+        domainObjects.put(1, product1);
 
         Product product2 = new Product();
         product2.setId(2);
         product2.setDescription("Product 2");
         product2.setImageUrl("product2.jpg");
         product2.setPrice(new BigDecimal(65));
-        products.put(2, product2);
+        domainObjects.put(2, product2);
 
         Product product3 = new Product();
         product3.setId(3);
         product3.setDescription("Product 3");
         product3.setImageUrl("product3.jpg");
         product3.setPrice(new BigDecimal(42));
-        products.put(3, product3);
+        domainObjects.put(3, product3);
     }
 
 }

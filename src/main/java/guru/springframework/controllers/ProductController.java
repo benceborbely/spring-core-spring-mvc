@@ -20,29 +20,29 @@ public class ProductController {
     }
 
     @RequestMapping("/products")
-    public String listProducts(Model model) {
-        model.addAttribute("products", productService.listAllProducts());
+    public String list(Model model) {
+        model.addAttribute("products", productService.getAll());
 
         return "products";
     }
 
     @RequestMapping("/product/{id}")
-    public String showProduct(@PathVariable Integer id, Model model) {
-        model.addAttribute("product", productService.getProductById(id));
+    public String show(@PathVariable Integer id, Model model) {
+        model.addAttribute("product", productService.getById(id));
 
         return "product";
     }
 
     @RequestMapping("/product/new")
-    public String newProduct(Model model) {
+    public String create(Model model) {
         model.addAttribute("product", new Product());
 
         return "productform";
     }
 
     @RequestMapping("/product/edit/{id}")
-    public String editProduct(@PathVariable Integer id, Model model) {
-        model.addAttribute("product", productService.getProductById(id));
+    public String edit(@PathVariable Integer id, Model model) {
+        model.addAttribute("product", productService.getById(id));
 
         return "productform";
     }
@@ -56,8 +56,8 @@ public class ProductController {
 
 
     @RequestMapping("/product/delete/{id}")
-    public String deleteProduct(@PathVariable Integer id) {
-        productService.deleteProduct(id);
+    public String delete(@PathVariable Integer id) {
+        productService.delete(id);
 
         return "redirect:/products";
     }
