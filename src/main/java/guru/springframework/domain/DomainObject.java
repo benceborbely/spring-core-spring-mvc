@@ -1,15 +1,9 @@
 package guru.springframework.domain;
 
-public abstract class DomainObject {
+public interface DomainObject {
 
-    private Integer id;
+    Integer getId();
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    void setId(Integer id);
 
 }

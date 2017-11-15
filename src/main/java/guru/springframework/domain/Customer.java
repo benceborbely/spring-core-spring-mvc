@@ -3,7 +3,7 @@ package guru.springframework.domain;
 import javax.persistence.*;
 
 @Entity
-public class Customer extends DomainObject {
+public class Customer implements DomainObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +29,16 @@ public class Customer extends DomainObject {
     private String state;
 
     private String zipCode;
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getVersion() {
         return version;
