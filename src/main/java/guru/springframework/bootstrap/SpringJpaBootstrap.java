@@ -1,6 +1,8 @@
 package guru.springframework.bootstrap;
 
+import guru.springframework.domain.Customer;
 import guru.springframework.domain.Product;
+import guru.springframework.services.CustomerService;
 import guru.springframework.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -14,14 +16,22 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
 
     private ProductService productService;
 
+    private CustomerService customerService;
+
     @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
 
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         loadProducts();
+        loadCustomers();
     }
 
     public void loadProducts() {
@@ -38,6 +48,20 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
         product2.setPrice(new BigDecimal("299.99"));
         product2.setImageUrl("product2.jpg");
         productService.saveOrUpdate(product2);
+    }
+
+    public void loadCustomers() {
+        Customer customer1 = new Customer();
+        customer1.setAddressLine1("Address 1");
+        customer1.setAddressLine2("Address 2");
+        customer1.setCity("Budapest");
+        customer1.setEmail("firstcustomer@test.com");
+        customer1.setFirstName("John");
+        customer1.setLastName("Doe");
+        customer1.setPhoneNumber("12345678");
+        customer1.setState("State");
+        customer1.setZipCode("1234");
+        customerService.saveOrUpdate(customer1);
     }
 
 }
